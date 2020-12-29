@@ -10,13 +10,11 @@ namespace NSGA_II_Algorithm.implementations
 {
     class NonDominatedSort: INonDominatedSort
     {
-        private List<NonDominatedSortAtom> _nonDominatedSortAtoms;
         private IReadOnlyList<Item> _items;
 
-        public NonDominatedSort(IReadOnlyList<Item> items, List<NonDominatedSortAtom> nonDominatedSortAtoms)
+        public NonDominatedSort(IReadOnlyList<Item> items)
         {
             _items = items;
-            _nonDominatedSortAtoms = nonDominatedSortAtoms;
         }
 
         public List<List<NonDominatedSortAtom>> Sort(List<NonDominatedSortAtom> list)
@@ -59,7 +57,7 @@ namespace NSGA_II_Algorithm.implementations
                             if (list[index2].Dominates.Remove(list[index]))
                             {
                                 list[index2].DominationCount--;
-                            };
+                            }
                         }
                         list.RemoveAt(index);
                     }

@@ -35,5 +35,14 @@ namespace NSGA_II_Algorithm.models
             get => _dominates;
             set => _dominates = value;
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"NonDominatedSortAtom:\n");
+            sb.Append($"\t{Chromosome}\n");
+            sb.Append($"\tDominationCount: {_dominationCount}");
+            return sb.ToString();
+        }
     }
 }

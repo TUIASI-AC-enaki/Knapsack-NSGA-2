@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.interfaces
 {
-    interface ISort<T>
+    interface ISort<T, G>
     {
-        List<T> Sort(List<T> list);
+        List<G> Sort(List<T> list);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NSGA_II_Algorithm.models;
 
 namespace NSGA_II_Algorithm
 {
@@ -28,5 +29,14 @@ namespace NSGA_II_Algorithm
         public double Price => _price;
 
         public double TimeRequired => _timeRequired;
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{Name}\n");
+            sb.Append($"\tWeight: {Weight}\n");
+            sb.Append($"\tPrice: {Price}\n");
+            sb.Append($"\tTimeRequired: {TimeRequired}\n");
+            return sb.ToString();
+        }
     }
 }
