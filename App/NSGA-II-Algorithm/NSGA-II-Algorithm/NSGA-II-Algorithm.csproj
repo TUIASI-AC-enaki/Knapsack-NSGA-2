@@ -41,8 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="implementations\CrowdingDistanceSort.cs" />
+    <Compile Include="implementations\GeneticOperations.cs" />
+    <Compile Include="implementations\NonDominatedSort.cs" />
+    <Compile Include="interfaces\ICrowdingDistanceSort.cs" />
+    <Compile Include="interfaces\IGeneticOperations.cs" />
+    <Compile Include="interfaces\INonDominatedSort.cs" />
+    <Compile Include="interfaces\ISort.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="models\Chromosome.cs" />
+    <Compile Include="models\CrowdingDistanceAtom.cs" />
+    <Compile Include="models\NonDominatedSortAtom.cs" />
+    <Compile Include="NSGA_II.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
