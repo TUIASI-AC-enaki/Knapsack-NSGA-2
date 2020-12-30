@@ -11,6 +11,7 @@ namespace NSGA_II_Algorithm.interfaces
     {
         Chromosome Crossover(Chromosome parent1, Chromosome parent2);
         Chromosome Mutation(Chromosome item);
-        List<Chromosome> Selection(List<Chromosome> items, int sizeSelectedParents);
+        Chromosome TournamentSelection(List<Chromosome> chromosomes);
+        List<Tuple<Chromosome, Chromosome>> Selection(List<Chromosome> chromosomes);
     }
 }

@@ -15,11 +15,23 @@ namespace NSGA_II_CLI
         {
             var list = new List<Item>
             {
+                new Item("Lantisor de aur", 0.7, 500, 1),
+                new Item("Unicorn", 100, 300, 2),
                 new Item("Caldare", 2, 30, 30),
-                new Item("Unicorn", 100, 300, 100),
                 new Item("Mar", 0.2, 3, 3),
-                new Item("Biscuiti Oreo", 0.5, 5, 5),
-                new Item("Sticla", 0.7, 4, 4)
+                new Item("Sticla", 0.7, 4, 4),
+                new Item("Telefon",70,500,2.5),
+                new Item("Banane",0.2,2,3),
+                new Item("Parfum",0.4,50,4),
+                new Item("Acumulator",0.6,250,7),
+                new Item("Televizor",10,800,40),
+                new Item("Lanterna",0.2,30,2.2),
+                new Item("Calculator",10,2400,70),
+                new Item("Portofel cu bani",0.1,300,5),
+                new Item("Elicopter RC",0.5,700,20),
+                new Item("MASA DE TENIS",20,640,100),
+                new Item("Biscuiti Oreo", 0.5, 5, 5)
+
             };
             return list;
         }
@@ -85,7 +97,7 @@ namespace NSGA_II_CLI
             var items = GetMockDataItems();
             var nsgaAlgorithm = new NsgaAlgorithm(0.9, 0.02, items);
 
-            nsgaAlgorithm.Process(1, 20);
+            nsgaAlgorithm.Process(10, 10);
             Console.ReadLine();
 
         }

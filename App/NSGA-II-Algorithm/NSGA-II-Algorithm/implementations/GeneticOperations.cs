@@ -55,30 +55,32 @@ namespace NSGA_II_Algorithm.implementations
         }
 
 
-        public List<Chromosome> Selection(List<Chromosome> items, int sizeSelectedParents)
+        public Chromosome TournamentSelection(List<Chromosome> chromosomes)
         {
-            var parents = new List<Chromosome>();
+            var idx1 = rnd.Next(0, chromosomes.Count);
+            var idx2 = rnd.Next(0, chromosomes.Count);
 
-            for (var i = 0; i < sizeSelectedParents; ++i)
+            var dominate = chromosomes[idx1].Dominates(chromosomes[idx2], _items);
+            switch (dominate)
             {
-                var idx1 = rnd.Next(0, items.Count);
-                var idx2 = rnd.Next(0, items.Count);
-
-                var dominate = items[idx1].Dominates(items[idx2], _items);
-                switch (dominate)
-                {
-                    case 1:
-                        parents.Add(items[idx1]);
-                        break;
-                    case -1:
-                        parents.Add(items[idx2]);
-                        break;
-                    default:
-                        parents.Add(rnd.NextDouble() < 0.5 ? items[idx1]: items[idx2]);
-                        break;
-                }
+            case 1:
+                return chromosomes[idx1];
+            case -1:
+                return chromosomes[idx2];
+            default:
+                return rnd.NextDouble() < 0.5 ? chromosomes[idx1]: chromosomes[idx2];
             }
-            return parents;
+        }
+
+        public List<Tuple<Chromosome, Chromosome>> Selection(List<Chromosome> chromosomes)
+        {
+            var result = new List<Tuple<Chromosome, Chromosome>>();
+
+            for (var i = 0; i < chromosomes.Count; ++i)
+            {
+                result.Add(Tuple.Create(TournamentSelection(chromosomes), TournamentSelection(chromosomes)));
+            }
+            return result;
         }
     }
 }

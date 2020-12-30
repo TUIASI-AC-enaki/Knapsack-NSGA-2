@@ -21,20 +21,20 @@ namespace NSGA_II_Algorithm.implementations
         {
             var frontList = new List<List<NonDominatedSortAtom>>();
 
-            for (var i = 0; i < list.Count; ++i)
+            for (var i = 0; i < list.Count-1; ++i)
             {
-                for (var j = i + 1; j < list.Count; ++j)
+                for (var j = i+1; j < list.Count; ++j)
                 {
                     var dominateResult = list[i].Chromosome.Dominates(list[j].Chromosome, _items);
                     switch (dominateResult)
                     {
                         case 1:
                             list[j].DominationCount++;
-                            list[j].Dominates.Add(list[i]);
+                            list[i].Dominates.Add(list[j]);
                             break;
                         case -1:
                             list[i].DominationCount++;
-                            list[i].Dominates.Add(list[j]);
+                            list[j].Dominates.Add(list[i]);
                             break;
                         default:
                             break;
@@ -42,25 +42,29 @@ namespace NSGA_II_Algorithm.implementations
                 }
             }
 
-            while (list.Count > 0)
+            var running = true;
+            while (running)
             {
                 var currentFront = new List<NonDominatedSortAtom>();
-                for (var index = list.Count-1; index >= 0; ++index)
+                running = false;
+                var dominatedList = new List<NonDominatedSortAtom>();
+                for (var index = 0; index < list.Count; ++index)
                 {
                     if (list[index].DominationCount == 0)
                     {
+                        running = true;
+                        list[index].DominationCount = -1;
                         currentFront.Add(list[index]);
 
-                        for (var index2 = list.Count - 1; index2 >= 0; ++index2)
+                        foreach (var dominated in list[index].Dominates)
                         {
-                            if (index2 == index) continue;
-                            if (list[index2].Dominates.Remove(list[index]))
-                            {
-                                list[index2].DominationCount--;
-                            }
+                            dominatedList.Add(dominated);
                         }
-                        list.RemoveAt(index);
                     }
+                }
+                foreach (var dominated in dominatedList)
+                {
+                    dominated.DominationCount--;
                 }
                 frontList.Add(currentFront);
             }

@@ -85,6 +85,14 @@ namespace NSGA_II_Algorithm.models
             return sb.ToString();
         }
 
+        public string ToStringPlus(IReadOnlyList<Item> items)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{this}\n");
+            sb.Append($"{this.GetInfo(items)}");
+            return sb.ToString();
+        }
+
         public bool IsEqual(Chromosome obj)
         {
             if (Size != obj.Size)
@@ -98,7 +106,7 @@ namespace NSGA_II_Algorithm.models
             return true;
         }
 
-        public string GetInfo(List<Item> items)
+        public string GetInfo(IReadOnlyList<Item> items)
         {
             var sb = new StringBuilder();
             sb.Append($"\tWeight: {GetFitnessByWeight(items)}");
@@ -116,25 +124,27 @@ namespace NSGA_II_Algorithm.models
             }
         }
 
-        public static List<Chromosome> RemoveDuplicated(List<Chromosome> chromosomes)
+        public static void printListPlus(IReadOnlyList<Chromosome> chromosomes, IReadOnlyList<Item> items)
         {
-            return chromosomes.Distinct(new ChromosomeComparer()).ToList();
+            Console.WriteLine("##### CHROMOSOMES LIST PLUS ######");
+            foreach (var chromosome in chromosomes)
+            {
+                Console.WriteLine(chromosome.ToStringPlus(items));
+            }
         }
 
-        private class ChromosomeComparer : IEqualityComparer<Chromosome>
+        public static List<Chromosome> RemoveDuplicated(List<Chromosome> chromosomes)
         {
-            public bool Equals(Chromosome x, Chromosome y)
-            {
-                return x != null && x.IsEqual(y);
-            }
+            var filteredList = new List<Chromosome>();
 
-            public int GetHashCode(Chromosome obj)
+            foreach (var chromosome in chromosomes)
             {
-                unchecked
+                if (filteredList.FindIndex(item => item.IsEqual(chromosome)) == -1)
                 {
-                    return (obj.Size * 397) ^ (obj.Selected != null ? obj.Selected.GetHashCode() : 0);
+                    filteredList.Add(chromosome);
                 }
             }
+            return filteredList;
         }
     }
 }
