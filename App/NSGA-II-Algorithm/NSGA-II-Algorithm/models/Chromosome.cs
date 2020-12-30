@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -84,6 +85,19 @@ namespace NSGA_II_Algorithm.models
             return sb.ToString();
         }
 
+        public bool IsEqual(Chromosome obj)
+        {
+            if (Size != obj.Size)
+                return false;
+            for (var i = 0; i < obj.Size; ++i)
+            {
+                if (Selected[i] != obj.Selected[i])
+                    return false;
+            }
+
+            return true;
+        }
+
         public string GetInfo(List<Item> items)
         {
             var sb = new StringBuilder();
@@ -91,6 +105,36 @@ namespace NSGA_II_Algorithm.models
             sb.Append($"\n\tCost: {GetFitnessByCost(items)}");
             sb.Append($"\n\tTime Required: {GetFitnessByTime(items)}");
             return sb.ToString();
+        }
+
+        public static void printList(IReadOnlyList<Chromosome> chromosomes)
+        {
+            Console.WriteLine("##### CHROMOSOMES LIST ######");
+            foreach (var chromosome in chromosomes)
+            {
+                Console.WriteLine(chromosome);
+            }
+        }
+
+        public static List<Chromosome> RemoveDuplicated(List<Chromosome> chromosomes)
+        {
+            return chromosomes.Distinct(new ChromosomeComparer()).ToList();
+        }
+
+        private class ChromosomeComparer : IEqualityComparer<Chromosome>
+        {
+            public bool Equals(Chromosome x, Chromosome y)
+            {
+                return x != null && x.IsEqual(y);
+            }
+
+            public int GetHashCode(Chromosome obj)
+            {
+                unchecked
+                {
+                    return (obj.Size * 397) ^ (obj.Selected != null ? obj.Selected.GetHashCode() : 0);
+                }
+            }
         }
     }
 }

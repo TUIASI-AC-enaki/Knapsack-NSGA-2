@@ -14,15 +14,13 @@ namespace NSGA_II_Algorithm.implementations
 
         public double _crossoverProbability;
         public double _mutationProbability;
-        public double _selectionProbability;
-        
+
         private Random rnd = new Random(new System.DateTime().Millisecond);
 
-        public GeneticOperations(double crossoverProbability, double mutationProbability, double selectionProbability, IReadOnlyList<Item> items)
+        public GeneticOperations(double crossoverProbability, double mutationProbability, IReadOnlyList<Item> items)
         {
             _crossoverProbability = crossoverProbability;
             _mutationProbability = mutationProbability;
-            _selectionProbability = selectionProbability;
             _items = items;
         }
 
@@ -67,16 +65,17 @@ namespace NSGA_II_Algorithm.implementations
                 var idx2 = rnd.Next(0, items.Count);
 
                 var dominate = items[idx1].Dominates(items[idx2], _items);
-                if (dominate == 1)
+                switch (dominate)
                 {
-                    parents.Add(items[idx1]);
-                } else if (dominate == 0)
-                {
-                    parents.Add(items[idx2]);
-                }
-                else
-                {
-                    parents.Add(rnd.NextDouble() < 0.5 ? items[idx1]: items[idx2]);
+                    case 1:
+                        parents.Add(items[idx1]);
+                        break;
+                    case -1:
+                        parents.Add(items[idx2]);
+                        break;
+                    default:
+                        parents.Add(rnd.NextDouble() < 0.5 ? items[idx1]: items[idx2]);
+                        break;
                 }
             }
             return parents;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.models
 {
-    class NonDominatedSortAtom
+    public class NonDominatedSortAtom
     {
         private Chromosome _chromosome;
         private int _dominationCount;
@@ -15,6 +15,7 @@ namespace NSGA_II_Algorithm.models
         public NonDominatedSortAtom(Chromosome chromosome)
         {
             _chromosome = chromosome;
+            _dominationCount = 0;
             _dominates = new List<NonDominatedSortAtom>();
         }
 
@@ -43,6 +44,16 @@ namespace NSGA_II_Algorithm.models
             sb.Append($"\t{Chromosome}\n");
             sb.Append($"\tDominationCount: {_dominationCount}");
             return sb.ToString();
+        }
+
+        public static List<NonDominatedSortAtom> MapFromChromosomes(List<Chromosome> list)
+        {
+            return list.Select(chromosome => new NonDominatedSortAtom(chromosome)).ToList();
+        }
+
+        public static List<Chromosome> MapToChromosomes(List<NonDominatedSortAtom> list)
+        {
+            return list.Select(atom => atom.Chromosome).ToList();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NSGA_II_Algorithm;
+using NSGA_II_Algorithm.implementations;
 using NSGA_II_Algorithm.models;
 
 namespace NSGA_II_CLI
@@ -13,12 +13,14 @@ namespace NSGA_II_CLI
 
         static List<Item> GetMockDataItems()
         {
-            var list = new List<Item>();
-            list.Add(new Item("Caldare", 2, 30, 30));
-            list.Add(new Item("Unicorn", 100, 300, 100));
-            list.Add(new Item("Mar", 0.2, 3, 3));
-            list.Add(new Item("Biscuiti Oreo", 0.5, 5, 5));
-            list.Add(new Item("Sticla", 0.7, 4, 4));
+            var list = new List<Item>
+            {
+                new Item("Caldare", 2, 30, 30),
+                new Item("Unicorn", 100, 300, 100),
+                new Item("Mar", 0.2, 3, 3),
+                new Item("Biscuiti Oreo", 0.5, 5, 5),
+                new Item("Sticla", 0.7, 4, 4)
+            };
             return list;
         }
 
@@ -32,13 +34,23 @@ namespace NSGA_II_CLI
             return list;
         }
 
-        static void Main(string[] args)
+        static List<NonDominatedSortAtom> GetMockDataNDSAtom(List<Chromosome> list)
+        {
+            return NonDominatedSortAtom.MapFromChromosomes(list);
+        }
+
+        static List<CrowdingDistanceAtom> GetMockDataCDAtom(List<Chromosome> list)
+        {
+            return CrowdingDistanceAtom.MapFromChromosomes(list);
+        }
+
+        static void PrintTest()
         {
             Console.WriteLine("\n######################################\n");
             var items = GetMockDataItems();
             for (var index = 0; index < items.Count; index++)
             {
-                Console.WriteLine($"{index+1} - {items[index]}\n");
+                Console.WriteLine($"{index + 1} - {items[index]}\n");
             }
 
             Console.WriteLine("\n######################################\n");
@@ -46,12 +58,36 @@ namespace NSGA_II_CLI
 
             for (var index = 0; index < chromosomes.Count; index++)
             {
-                Console.WriteLine($"{index+1} - {chromosomes[index]}");
+                Console.WriteLine($"{index + 1} - {chromosomes[index]}");
                 Console.WriteLine($"{chromosomes[index].GetInfo(items)}\n");
             }
 
-            Console.WriteLine("Hello world!\n");
+            Console.WriteLine("\n######################################\n");
+            var ndsAtoms = GetMockDataNDSAtom(chromosomes);
+            for (var index = 0; index < ndsAtoms.Count; index++)
+            {
+                Console.WriteLine($"{index + 1} - {ndsAtoms[index]}");
+            }
+
+            Console.WriteLine("\n######################################\n");
+            var cdAtoms = GetMockDataCDAtom(chromosomes);
+            for (var index = 0; index < cdAtoms.Count; index++)
+            {
+                Console.WriteLine($"{index + 1} - {cdAtoms[index]}");
+            }
             Console.ReadLine();
+        }
+
+
+        static void Main(string[] args)
+        {
+            //PrintTest();
+            var items = GetMockDataItems();
+            var nsgaAlgorithm = new NsgaAlgorithm(0.9, 0.02, items);
+
+            nsgaAlgorithm.Process(1, 20);
+            Console.ReadLine();
+
         }
     }
 }

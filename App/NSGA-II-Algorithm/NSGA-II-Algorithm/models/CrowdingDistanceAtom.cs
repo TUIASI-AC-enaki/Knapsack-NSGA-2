@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.models
 {
-    class CrowdingDistanceAtom
+    public class CrowdingDistanceAtom
     {
         private Chromosome _chromosome;
         private double _crowdingDistance;
+
+        public CrowdingDistanceAtom(Chromosome chromosome)
+        {
+            _chromosome = chromosome;
+            _crowdingDistance = 0;
+        }
 
         public Chromosome Chromosome
         {
@@ -29,6 +35,16 @@ namespace NSGA_II_Algorithm.models
             sb.Append($"\t{Chromosome}\n");
             sb.Append($"\tCrowding Distance: {_crowdingDistance}");
             return sb.ToString();
+        }
+
+        public static List<CrowdingDistanceAtom> MapFromChromosomes(List<Chromosome> list)
+        {
+            return list.Select(chromosome => new CrowdingDistanceAtom(chromosome)).ToList();
+        }
+
+        public static List<Chromosome> MapToChromosomes(List<CrowdingDistanceAtom> list)
+        {
+            return list.Select(crowd => crowd.Chromosome).ToList();
         }
     }
 }
