@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGA-II-GUI", "NSGA-II-GUI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGA-II-CLI", "NSGA-II-CLI\NSGA-II-CLI.csproj", "{B7D76967-07BD-4175-AF94-9A8682E4F512}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSGA_Tests", "NSGA_Tests\NSGA_Tests.csproj", "{5F8F49A9-9617-4D5E-A2AA-F4DC34E4DC76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B7D76967-07BD-4175-AF94-9A8682E4F512}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7D76967-07BD-4175-AF94-9A8682E4F512}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7D76967-07BD-4175-AF94-9A8682E4F512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F8F49A9-9617-4D5E-A2AA-F4DC34E4DC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F8F49A9-9617-4D5E-A2AA-F4DC34E4DC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F8F49A9-9617-4D5E-A2AA-F4DC34E4DC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F8F49A9-9617-4D5E-A2AA-F4DC34E4DC76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
