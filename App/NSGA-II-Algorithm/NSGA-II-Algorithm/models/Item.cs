@@ -3,12 +3,20 @@ using System.Text;
 
 namespace NSGA_II_Algorithm.models
 {
+    /// <summary>
+    /// Item representing the objects that can be taken.
+    /// Item contains:
+    /// - name
+    /// - weight
+    /// - price
+    /// - time required t be taken
+    /// </summary>
     public class Item
     {
-        private String _name;
-        private double _weight;
-        private double _price;
-        private double _timeRequired;
+        private readonly String _name;
+        private readonly double _weight;
+        private readonly double _price;
+        private readonly double _timeRequired;
 
         public Item(string name, double weight, double price, double timeRequired)
         {

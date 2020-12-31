@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NSGA_II_Algorithm.models;
 
 namespace NSGA_Tests
@@ -13,9 +9,10 @@ namespace NSGA_Tests
         {
             var list = new List<Item>
             {
-                new Item("Caldare", 2, 30, 30),
-                new Item("Unicorn", 100, 300, 100),
-                new Item("Roaba", 150, 100, 120),
+                new Item("Unicorn", 100, 300, 3),
+                new Item("YoYo", 2, 40, 30),
+                new Item("Monolit", 30, 50, 50),
+                new Item("Guitar", 4, 70, 60),
             };
             return list;
         }

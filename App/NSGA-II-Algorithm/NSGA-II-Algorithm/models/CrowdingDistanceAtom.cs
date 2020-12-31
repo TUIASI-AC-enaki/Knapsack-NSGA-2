@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.models
 {
+    /// <summary>
+    /// Model used in CrowdingSort containing a chromosome and the crowding distance
+    /// </summary>
     public class CrowdingDistanceAtom
     {
         private Chromosome _chromosome;

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.models
 {
+    /// <summary>
+    /// Model used in NonDominatedSort containing a chromosome, dominationCount
+    /// and the list of dominates
+    /// </summary>
     public class NonDominatedSortAtom
     {
         private Chromosome _chromosome;

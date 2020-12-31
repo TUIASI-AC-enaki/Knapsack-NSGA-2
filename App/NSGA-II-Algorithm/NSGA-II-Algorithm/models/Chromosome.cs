@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NSGA_II_Algorithm.models
 {
+    /// <summary>
+    /// The model containing a list of bool-s of what items to be selected
+    /// </summary>
     public class Chromosome
     {
         static readonly Random rnd = new Random();
@@ -120,7 +120,7 @@ namespace NSGA_II_Algorithm.models
             return sb.ToString();
         }
 
-        public static void printList(IReadOnlyList<Chromosome> chromosomes)
+        public static void PrintList(IReadOnlyList<Chromosome> chromosomes)
         {
             Console.WriteLine("##### CHROMOSOMES LIST ######");
             foreach (var chromosome in chromosomes)
@@ -129,7 +129,7 @@ namespace NSGA_II_Algorithm.models
             }
         }
 
-        public static void printListPlus(IReadOnlyList<Chromosome> chromosomes, IReadOnlyList<Item> items)
+        public static void PrintListPlus(IReadOnlyList<Chromosome> chromosomes, IReadOnlyList<Item> items)
         {
             Console.WriteLine("##### CHROMOSOMES LIST PLUS ######");
             foreach (var chromosome in chromosomes)
@@ -138,6 +138,11 @@ namespace NSGA_II_Algorithm.models
             }
         }
 
+        /// <summary>
+        /// Remove duplicates from a list of chromosomes
+        /// </summary>
+        /// <param name="chromosomes">List of chromosomes</param>
+        /// <returns>Filtered list</returns>
         public static List<Chromosome> RemoveDuplicated(List<Chromosome> chromosomes)
         {
             var filteredList = new List<Chromosome>();

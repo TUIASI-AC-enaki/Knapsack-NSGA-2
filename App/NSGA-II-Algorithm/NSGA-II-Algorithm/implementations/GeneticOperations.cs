@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NSGA_II_Algorithm.interfaces;
 using NSGA_II_Algorithm.models;
 
 namespace NSGA_II_Algorithm.implementations
 {
+    /// <summary>
+    /// Class for genetic operations like:
+    /// - selection
+    /// - mutation
+    /// - crossover
+    /// - tournament selection
+    /// </summary>
     class GeneticOperations: IGeneticOperations
     {
         private IReadOnlyList<Item> _items;
@@ -24,6 +28,12 @@ namespace NSGA_II_Algorithm.implementations
             _items = items;
         }
 
+        /// <summary>
+        /// Select a slice index between 0..parents.genes.size and do the crossover between them
+        /// </summary>
+        /// <param name="parent1">Parent one chromosome</param>
+        /// <param name="parent2">Parent one chromosome</param>
+        /// <returns>New cross-over-ed chromosome</returns>
         public Chromosome Crossover(Chromosome parent1, Chromosome parent2)
         {
             if (parent1.Size != parent2.Size)
@@ -41,6 +51,11 @@ namespace NSGA_II_Algorithm.implementations
             return child;
         }
 
+        /// <summary>
+        /// Iterate through each gene of the chromosome and mutates it.
+        /// </summary>
+        /// <param name="item">Chromosome to be mutated</param>
+        /// <returns>A mutated chromosome with the specific probability for each gene</returns>
         public Chromosome Mutation(Chromosome item)
         {
             var clone = item.Clone();
@@ -54,7 +69,11 @@ namespace NSGA_II_Algorithm.implementations
             return clone;
         }
 
-
+        /// <summary>
+        /// This function Select a chromosome using the tournament method
+        /// </summary>
+        /// <param name="chromosomes">List of chromosomes</param>
+        /// <returns>A chromosome selected using tournament method</returns>
         public Chromosome TournamentSelection(List<Chromosome> chromosomes)
         {
             var idx1 = rnd.Next(0, chromosomes.Count);
@@ -72,6 +91,11 @@ namespace NSGA_II_Algorithm.implementations
             }
         }
 
+        /// <summary>
+        /// This functions return a list of pair of parents of the same length as the input list using tournament method
+        /// </summary>
+        /// <param name="chromosomes">List of chromosomes</param>
+        /// <returns>A list of pairs of selected parents using the tournament method</returns>
         public List<Tuple<Chromosome, Chromosome>> Selection(List<Chromosome> chromosomes)
         {
             var result = new List<Tuple<Chromosome, Chromosome>>();

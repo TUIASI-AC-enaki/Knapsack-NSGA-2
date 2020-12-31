@@ -34,8 +34,10 @@ namespace NSGA_II_GUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            richTextBoxInputCheck.Text = "";
+            richTextBoxInputCheck.AppendText($"\r\n[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
+            richTextBoxInputCheck.AppendText($"Start NSGA-II Algorithm\r\n", Color.DodgerBlue);
 
+            richTextBoxInputCheck.AppendText($"[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
             try
             {
                 var maxGenerations = int.Parse(textBoxMaxGen.Text, CultureInfo.InvariantCulture);
@@ -69,15 +71,15 @@ namespace NSGA_II_GUI
             }
             catch (FormatException)
             {
-                richTextBoxInputCheck.AppendText("Format Exception\r\n",Color.Brown);
+                richTextBoxInputCheck.AppendText($"Format Exception\r\n",Color.Red);
                 return;
             }
             catch (NullReferenceException)
             {
-                richTextBoxInputCheck.AppendText("Null error\r\n",Color.Red);
+                richTextBoxInputCheck.AppendText($"Null error\r\n",Color.Red);
                 return;
             }
-            richTextBoxInputCheck.AppendText("Data Loaded Successfully\r\n", Color.Green);
+            richTextBoxInputCheck.AppendText($"Data Loaded Successfully\r\n", Color.GreenYellow);
 
             tabControl1.SelectTab(1);
         }
@@ -118,6 +120,7 @@ namespace NSGA_II_GUI
             NSGAChart.Zoom = ZoomingOptions.Xy;
             NSGAChart.AnimationsSpeed = TimeSpan.FromMilliseconds(150);
         }
+
         private void CartesianChart1OnDataClick(object sender, ChartPoint chartPoint)
         {
             
@@ -143,10 +146,11 @@ namespace NSGA_II_GUI
 
         private void btnDefaultData_Click(object sender, EventArgs e)
         {
+
             dataGrid.DataSource = null;
             dataGrid.Rows.Clear();
             textBoxMaxGen.Text = "1";
-            textBoxPopSize.Text = "150";
+            textBoxPopSize.Text = "100";
             textBoxCrossover.Text = "0.9";
             textBoxMutation.Text = "0.02";
 
@@ -157,11 +161,14 @@ namespace NSGA_II_GUI
                     item.Price.ToString(CultureInfo.InvariantCulture),
                     item.TimeRequired.ToString(CultureInfo.InvariantCulture));
             }
+            richTextBoxInputCheck.AppendText($"[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
+            richTextBoxInputCheck.AppendText($"Loaded Default Data Successfully\r\n", Color.Yellow);
+
         }
 
-        private void AddTableItem(String name, String weight, String price, String time)
+        private void AddTableItem(string name, string weight, string price, string time)
         {
-            DataGridViewRow row = (DataGridViewRow)dataGrid.Rows[0].Clone();
+            var row = (DataGridViewRow)dataGrid.Rows[0].Clone();
             row.Cells[0].Value = name;
             row.Cells[1].Value = double.Parse(weight);
             row.Cells[2].Value = double.Parse(price);
@@ -173,22 +180,12 @@ namespace NSGA_II_GUI
         {
             dataGrid.DataSource = null;
             dataGrid.Rows.Clear();
-        }
-
-        private void btnAddItem_Click(object sender, EventArgs e)
-        {
-
-            foreach (DataGridViewRow row in dataGrid.SelectedRows)
-            {
-                if (row.Index+1 != dataGrid.Rows.Count)
-                {
-                    dataGrid.Rows.RemoveAt(row.Index);
-                }
-            }
+            richTextBoxInputCheck.AppendText($"[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
+            richTextBoxInputCheck.AppendText($"Reset Data Successfully\r\n", Color.DarkGoldenrod);
         }
 
 
-        static List<Item> GetDefaultItems()
+        static IEnumerable<Item> GetDefaultItems()
         {
             var list = new List<Item>
             {
@@ -214,16 +211,49 @@ namespace NSGA_II_GUI
 
         private void buttonMaxWeightFilter_Click(object sender, EventArgs e)
         {
-            double weight;
-            if (double.TryParse(textBoxMaxWeight.Text,out weight))
+            richTextBoxInputCheck.AppendText($"[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
+            if (!double.TryParse(textBoxMaxWeight.Text, out var weight))
             {
-                var filteredChromosome = _chromosomes.Where(chr => chr.GetFitnessByWeight(_items) <= weight).ToList();
-                DrawGraphics(filteredChromosome);
-            }
-
+                richTextBoxInputCheck.AppendText($"Invalid Weight. Can not filter data.\r\n", Color.Red);
+                return;
+            };
+            var filteredChromosome = _chromosomes.Where(chr => chr.GetFitnessByWeight(_items) <= weight).ToList();
+            DrawGraphics(filteredChromosome);
+            richTextBoxInputCheck.AppendText($"Data Filtered successfully by {weight}.\r\n", Color.Cyan);
         }
 
+        private void btnDeleteSelected_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGrid.SelectedRows)
+            {
+                if (row.Index + 1 != dataGrid.Rows.Count)
+                {
+                    dataGrid.Rows.RemoveAt(row.Index);
+                }
+            }
+            richTextBoxInputCheck.AppendText($"[{Utils.GetCurrentTime()}] - ", Color.LightGreen);
+            richTextBoxInputCheck.AppendText($"Selected items deleted successfully.\r\n", Color.Magenta);
+        }
     }
+
+    public static class Utils
+    {
+        public static string GetCurrentTime()
+        {
+            var now = DateTime.UtcNow;
+
+            var year = now.Year;
+            var month = now.Month;
+            var day = now.Day;
+            var hour = now.Hour;
+            var minute = now.Minute;
+            var second = now.Second;
+            var millisecond = now.Millisecond;
+
+            return $"{year:0000}-{month:00}-{day:00} {hour:00}:{minute:00}:{second:00}.{millisecond:000}";
+        }
+    }
+
     public static class RichTextBoxExtensions
     {
         public static void AppendText(this RichTextBox box, string text, Color color)

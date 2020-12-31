@@ -27,7 +27,21 @@ namespace NSGA_II_Algorithm.implementations
             return fronts.Select(NonDominatedSortAtom.MapToChromosomes).ToList();
         }
 
-        public List<Chromosome> Process(int nrGenerations, int populationSize)
+        /// <summary>
+        /// Generate a list of chromosomes.
+        /// Repeat nrGenerations the follwing:
+        /// - Select parents with tournament method
+        /// - Crossover
+        /// - Mutation
+        /// - Append generate children to the current population
+        /// - Non dominated Sort
+        /// - Crowding Distance Sort for the last front to be inserted in order to complete the newPopulation to the last size
+        /// </summary>
+        /// <param name="nrGenerations">Number of generations for evolution</param>
+        /// <param name="populationSize">Population Size of Chromosome</param>
+        /// <param name="debug">Display Info Variable</param>
+        /// <returns>A list of chromosomes</returns>
+        public List<Chromosome> Process(int nrGenerations, int populationSize, bool debug=false)
         {
             var chromosomes = new List<Chromosome>();
             for (var i = 0; i < populationSize; i++)
@@ -42,18 +56,19 @@ namespace NSGA_II_Algorithm.implementations
 
             //chromosomes = Chromosome.RemoveDuplicated(chromosomes).Take(Math.Min(populationSize, chromosomes.Count)).ToList();
 
-
             for (var currentGeneration = 0; currentGeneration < nrGenerations; ++currentGeneration)
             {
                 for (int i = chromosomes.Count; i < populationSize; ++i)
                 {
                     chromosomes.Add(Chromosome.GenerateRandomChromosome(_items.Count));
                 }
-                Console.WriteLine($"\n############### GENERATION {currentGeneration+1}###########");
+                if (debug)
+                    Console.WriteLine($"\n############### GENERATION {currentGeneration+1}###########");
 
                 //TournamentSelection of Parents
                 var selectedPairParents = _geneticOperations.Selection(chromosomes);
-                Console.WriteLine($"\nSelected Pair Parents size: {selectedPairParents.Count}");
+                if (debug)
+                    Console.WriteLine($"\nSelected Pair Parents size: {selectedPairParents.Count}");
 
                 //Crossover
                 var children = new List<Chromosome>();
@@ -62,28 +77,38 @@ namespace NSGA_II_Algorithm.implementations
                 {
                     children.Add(_geneticOperations.Crossover(selectedParents.Item1, selectedParents.Item1));
                 }
-                Console.WriteLine($"\nChildren size: {children.Count}");
-                Chromosome.printList(children);
+
+                if (debug)
+                {
+                    Console.WriteLine($"\nChildren size: {children.Count}");
+                    Chromosome.PrintList(children);
+                }
 
                 //Mutation
                 children = Chromosome.RemoveDuplicated(children.Select(child => _geneticOperations.Mutation(child)).ToList());
-                Console.WriteLine($"\nAfter Mutation Children size: {children.Count}");
-                Chromosome.printList(children);
+                if (debug)
+                {
+                    Console.WriteLine($"\nAfter Mutation Children size: {children.Count}");
+                    Chromosome.PrintList(children);
+                }
 
                 //New Population
                 chromosomes.AddRange(children);
                 //chromosomes = Chromosome.RemoveDuplicated(chromosomes).Take(Math.Min(populationSize, chromosomes.Count)).ToList();
-                Console.WriteLine($"\nNew Population size: {chromosomes.Count}");
+                if (debug)
+                    Console.WriteLine($"\nNew Population size: {chromosomes.Count}");
 
                 //Non Dominated Sort
-                Console.WriteLine($"\n############ NON DOMINATED SORT ###############");
+                if (debug)
+                    Console.WriteLine($"\n############ NON DOMINATED SORT ###############");
                 var fronts = _nonDominatedSort.Sort(NonDominatedSortAtom.MapFromChromosomes(chromosomes));
 
-                for (int i = 0; i < fronts.Count; ++i)
-                {
-                    Console.WriteLine($"\r\nFront {i+1} front size {fronts[i].Count}");
-                    Chromosome.printListPlus(NonDominatedSortAtom.MapToChromosomes(fronts[i]), _items);
-                }
+                if (debug)
+                    for (int i = 0; i < fronts.Count; ++i)
+                    {
+                        Console.WriteLine($"\r\nFront {i+1} front size {fronts[i].Count}");
+                        Chromosome.PrintListPlus(NonDominatedSortAtom.MapToChromosomes(fronts[i]), _items);
+                    }
 
                 var newPopulation = new List<Chromosome>();
 
@@ -94,19 +119,24 @@ namespace NSGA_II_Algorithm.implementations
                     currentFront++;
                 }
 
-                Console.WriteLine($"Front for crowding distance {currentFront}");
-                Console.WriteLine($"Current new Population Size {newPopulation.Count}");
+                if (debug)
+                {
+                    Console.WriteLine($"Front for crowding distance {currentFront}");
+                    Console.WriteLine($"Current new Population Size {newPopulation.Count}");
 
-                //Crowding Distance Sort
-                Console.WriteLine($"\n############ CROWDING DISTANCE SORT ###############");
+                    //Crowding Distance Sort
+                    Console.WriteLine($"\n############ CROWDING DISTANCE SORT ###############");
+                }
 
                 var selectedAtoms = _crowdingDistanceSort.Sort(
                     CrowdingDistanceAtom.MapFromChromosomes(
                         NonDominatedSortAtom.MapToChromosomes(fronts[currentFront])));
-                Console.WriteLine($"Current Selected Atoms {selectedAtoms.Count}");
+                if (debug)
+                    Console.WriteLine($"Current Selected Atoms {selectedAtoms.Count}");
 
                 newPopulation.AddRange(CrowdingDistanceAtom.MapToChromosomes(selectedAtoms.Take(populationSize - newPopulation.Count).ToList()));
-                Chromosome.printListPlus(newPopulation, _items);
+                if (debug)
+                    Chromosome.PrintListPlus(newPopulation, _items);
 
                 chromosomes = newPopulation;
                 chromosomes = Chromosome.RemoveDuplicated(chromosomes).Take(Math.Min(populationSize, chromosomes.Count)).ToList();

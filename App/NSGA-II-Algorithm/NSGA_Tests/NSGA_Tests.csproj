@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChromosomeTests.cs" />
+    <Compile Include="CrowdingDistanceSortTests.cs" />
     <Compile Include="MockDataProvider.cs" />
+    <Compile Include="NonDominatingSortTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
