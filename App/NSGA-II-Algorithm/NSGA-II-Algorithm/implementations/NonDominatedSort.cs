@@ -8,7 +8,7 @@ using NSGA_II_Algorithm.models;
 
 namespace NSGA_II_Algorithm.implementations
 {
-    class NonDominatedSort: INonDominatedSort
+    public class NonDominatedSort: INonDominatedSort
     {
         private IReadOnlyList<Item> _items;
 
@@ -66,7 +66,12 @@ namespace NSGA_II_Algorithm.implementations
                 {
                     dominated.DominationCount--;
                 }
-                frontList.Add(currentFront);
+
+                if (currentFront.Count > 0)
+                {
+                    frontList.Add(currentFront);
+                }
+               
             }
 
             return frontList;

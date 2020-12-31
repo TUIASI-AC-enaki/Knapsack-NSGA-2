@@ -53,6 +53,11 @@ namespace NSGA_II_Algorithm.models
             return items.Where((t, i) => Selected[i]).Sum(t => t.Weight);
         }
 
+        public IReadOnlyList<Item> getSelectedItems(IReadOnlyList<Item> items)
+        {
+            return items.Where((t, i) => Selected[i]).ToList();
+        }
+
         public int Dominates(Chromosome c, IReadOnlyList<Item> items)
         {
             var thisCost = this.GetFitnessByCost(items);
