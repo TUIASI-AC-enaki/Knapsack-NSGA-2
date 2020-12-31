@@ -21,6 +21,12 @@ namespace NSGA_II_Algorithm.implementations
             _nonDominatedSort = new NonDominatedSort(items);
         }
 
+        public List<List<Chromosome>> SortByFronts(List<Chromosome> chromosomes)
+        {
+            var fronts = _nonDominatedSort.Sort(NonDominatedSortAtom.MapFromChromosomes(chromosomes));
+            return fronts.Select(NonDominatedSortAtom.MapToChromosomes).ToList();
+        }
+
         public List<Chromosome> Process(int nrGenerations, int populationSize)
         {
             var chromosomes = new List<Chromosome>();

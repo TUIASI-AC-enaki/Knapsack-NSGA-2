@@ -10,5 +10,6 @@ namespace NSGA_II_Algorithm.interfaces
     public interface INsgaAlgorithm
     {
         List<Chromosome> Process(int nrGenerations, int populationSize);
+        List<List<Chromosome>> SortByFronts(List<Chromosome> chromosomes);
     }
 }
