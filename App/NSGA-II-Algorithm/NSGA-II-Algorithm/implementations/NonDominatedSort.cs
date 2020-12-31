@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NSGA_II_Algorithm.interfaces;
 using NSGA_II_Algorithm.models;
 
@@ -17,10 +13,16 @@ namespace NSGA_II_Algorithm.implementations
             _items = items;
         }
 
+        /// <summary>
+        /// Sort the atom list to fronts
+        /// </summary>
+        /// <param name="list">List nonDominatedSortAtom</param>
+        /// <returns>Sorted List of fronts</returns>
         public List<List<NonDominatedSortAtom>> Sort(List<NonDominatedSortAtom> list)
         {
             var frontList = new List<List<NonDominatedSortAtom>>();
 
+            // update the domination count and dominates list
             for (var i = 0; i < list.Count-1; ++i)
             {
                 for (var j = i+1; j < list.Count; ++j)
@@ -42,6 +44,7 @@ namespace NSGA_II_Algorithm.implementations
                 }
             }
 
+            // creating the fronts according to domination count and dominates list
             var running = true;
             while (running)
             {
@@ -71,7 +74,6 @@ namespace NSGA_II_Algorithm.implementations
                 {
                     frontList.Add(currentFront);
                 }
-               
             }
 
             return frontList;

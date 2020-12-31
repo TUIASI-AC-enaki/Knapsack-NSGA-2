@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
 using NSGA_II_Algorithm.interfaces;
@@ -7,7 +6,7 @@ using NSGA_II_Algorithm.models;
 
 namespace NSGA_II_Algorithm.implementations
 {
-    class CrowdingDistanceSort: ICrowdingDistanceSort
+    public class CrowdingDistanceSort: ICrowdingDistanceSort
     {
         private IReadOnlyList<Item> _items;
 
@@ -16,7 +15,11 @@ namespace NSGA_II_Algorithm.implementations
             _items = items;
         }
 
-
+        /// <summary>
+        /// This function updates their crowding distance values
+        /// </summary>
+        /// <param name="list">List of crowdingDistanceAtoms</param>
+        /// <returns>List of crowdingDistanceAtoms with the distance updated</returns>
         public List<CrowdingDistanceAtom> Sort(List<CrowdingDistanceAtom> list)
         {
             var maxByCost = list.MaxBy(atom => atom.Chromosome.GetFitnessByCost(_items)).ToList();
@@ -49,8 +52,8 @@ namespace NSGA_II_Algorithm.implementations
                     (sortedAtomsByFitness[i + 1].Chromosome.GetFitnessByCost(_items) -
                     sortedAtomsByFitness[i - 1].Chromosome.GetFitnessByCost(_items))/costDifference;
                 sortedAtomsByFitness[i].CrowdingDistance +=
-                    sortedAtomsByFitness[i + 1].Chromosome.GetFitnessByTime(_items) -
-                    sortedAtomsByFitness[i - 1].Chromosome.GetFitnessByTime(_items) / timeDifference;
+                    (sortedAtomsByFitness[i + 1].Chromosome.GetFitnessByTime(_items) -
+                    sortedAtomsByFitness[i - 1].Chromosome.GetFitnessByTime(_items)) / timeDifference;
             }
 
             return sortedAtomsByFitness.OrderByDescending(atom => atom.CrowdingDistance).ToList();

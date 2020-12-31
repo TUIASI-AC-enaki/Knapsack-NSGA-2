@@ -59,7 +59,6 @@
     <Compile Include="models\Chromosome.cs" />
     <Compile Include="models\CrowdingDistanceAtom.cs" />
     <Compile Include="models\NonDominatedSortAtom.cs" />
-    <Compile Include="NSGA_II.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
