@@ -16,8 +16,8 @@ namespace NSGA_II_Algorithm.implementations
     {
         private IReadOnlyList<Item> _items;
 
-        public double _crossoverProbability;
-        public double _mutationProbability;
+        private double _crossoverProbability;
+        private double _mutationProbability;
 
         private Random rnd = new Random(new System.DateTime().Millisecond);
 
